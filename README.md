@@ -15,10 +15,10 @@ Design a Traffic Sign Classifier based on a Convolutional Neural Network archite
 
 2. Designing, training and testing of the Model Architecture
     * Dataset is preprocessed using _grayscale_ and min-max _normalize_ routines.
-    <img src="./imgs/3_sample.PNG" alt="Preprocessed sample">
+    <img src="./imgs/3_sample.png" alt="Preprocessed sample">
     
     * Base-line CNN used is LeNet-5 convolutional network
-    <img src="./imgs/4_lenet.PNG" alt="LeNet-5 architecture" width="550" height="300">
+    <img src="./imgs/4_lenet.png" alt="LeNet-5 architecture" width="800" height="300">
     
     **Utilized architecture**
 
@@ -52,7 +52,7 @@ Design a Traffic Sign Classifier based on a Convolutional Neural Network archite
     
 3. Model testing on new images
     * Five web images of Traffic signs  are used to test system accuracy
-    <img src="./imgs/7_web_images" alt="Web traffic signs images" width="550" height="300">
+    <img src="./imgs/7_web_images.png" alt="Web traffic signs images" width="800" height="230">
     
     |Image (Class ID)|Prediction (Class ID)|Classification Correctness|Training examples|
     |--------|--------|--------|--------|
