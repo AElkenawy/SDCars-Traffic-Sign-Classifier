@@ -1,58 +1,79 @@
-## Project: Build a Traffic Sign Recognition Program
-[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
+# **Traffic Sign Classifier**
 
-Overview
----
-In this project, you will use what you've learned about deep neural networks and convolutional neural networks to classify traffic signs. You will train and validate a model so it can classify traffic sign images using the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained, you will then try out your model on images of German traffic signs that you find on the web.
+## Project goal
+Design a Traffic Sign Classifier based on a Convolutional Neural Network architecture of LeNet-5 enhanced by some modifications to improve its performance in the classification task.
 
-We have included an Ipython notebook that contains further instructions 
-and starter code. Be sure to download the [Ipython notebook](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb). 
+## Project steps
+1. Dataset Summary and Exploration
 
-We also want you to create a detailed writeup of the project. Check out the [writeup template](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup. The writeup can be either a markdown file or a pdf document.
+    | Training set size  |  34799  |
+    |--------|--------|
+    |**Validation set size** | **4410** |
+    |**Testing set size** | **12630** |
+    | **Traffic sign image shape** | **32x32 pixels with 3 channels (RGB)** |
+    | **Number of unique Classes/Labels** | **43** |
 
-To meet specifications, the project will require submitting three files: 
-* the Ipython notebook with the code
-* the code exported as an html file
-* a writeup report either as a markdown or pdf file 
+2. Designing, training and testing of the Model Architecture
+    * Dataset is preprocessed using _grayscale_ and min-max _normalize_ routines.
+    <img src="./imgs/3_sample.PNG" alt="Preprocessed sample">
+    
+    * Base-line CNN used is LeNet-5 convolutional network
+    <img src="./imgs/4_lenet.PNG" alt="LeNet-5 architecture" width="550" height="300">
+    
+    **Utilized architecture**
 
-Creating a Great Writeup
----
-A great writeup should include the [rubric points](https://review.udacity.com/#!/rubrics/481/view) as well as your description of how you addressed each point.  You should include a detailed description of the code used in each step (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
+    | Layer  |  Description  |
+    |--------|--------|
+    |Input | 32x32x1 Grayscale image|
+    |Convolution 5x5 |1x1 stride, valid padding, outputs 28x28x6 |
+    | ReLU (activation layer)| Rectifier linear unit |
+    | Max pooling | 2x2 stride, outputs 14x14x6|
+    |Convolution 5x5 | 1x1 stride, valid padding, outputs 10x10x16 |
+    |ReLU (activation layer) | Rectifier linear unit |
+    | Max pooling | 2x2 stride, outputs 5x5x6 |
+    | Fully connected| Inputs 400, outputs 120|
+    |ReLU (activation layer)| Rectifier linear unit |
+    | Dropout ||
+    |Fully connected | Outputs 84 |
+    | ReLU (activation layer)| Rectifier linear unit |
+    | Dropout ||
+    | Fully connected |Outputs 43|
+    | Dropout ||
+    |Logits | 43 Logits/labels |
+    
+    * Introduced three Dropout layers before the fully connected layers resulted in a better _Validation accuracy_ of around 95%, instead of interrupted learning after the 5th epoch.
+   
+    **Model training hyperparameters**
+    | Hyperparameter  |  Value  |
+    |--------|--------|
+    |Number of Epochs | 23|
+    |Batch size |80 |
+    | Learning rate α| 0.001 | 
+    
+3. Model testing on new images
+    * Five web images of Traffic signs  are used to test system accuracy
+    <img src="./imgs/7_web_images" alt="Web traffic signs images" width="550" height="300">
+    
+    |Image (Class ID)|Prediction (Class ID)|Classification Correctness|Training examples|
+    |--------|--------|--------|--------|
+    |Yield (13)|Yield (13)|Correct|1980|
+    |Ahead only (35) |Ahead only (35)|Correct |1080|
+    |Slippery road (23)|Right-of-way at the next intersection (11)|**Incorrect** |450|
+    |Stop (14)|Stop (14)|Correct|690|
+    |Right-of-way at the next intersection (11)| Dangerous curve to the right (20)|**Incorrect**|1170|
 
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
+4. Softmax probabilities analysis of the new images
+    * _tf.nn.softmax_ is used to review the 5 top probabilities related to each classified sign
 
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup.
-
-The Project
----
-The goals / steps of this project are the following:
-* Load the data set
-* Explore, summarize and visualize the data set
-* Design, train and test a model architecture
-* Use the model to make predictions on new images
-* Analyze the softmax probabilities of the new images
-* Summarize the results with a written report
-
-### Dependencies
-This lab requires:
-
-* [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit)
-
-The lab environment can be created with CarND Term1 Starter Kit. Click [here](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) for the details.
-
-### Dataset and Repository
-
-1. Download the data set. The classroom has a link to the data set in the "Project Instructions" content. This is a pickled dataset in which we've already resized the images to 32x32. It contains a training, validation and test set.
-2. Clone the project, which contains the Ipython notebook and the writeup template.
+### Basic Build Instructions
+* German Traffic Sign dataset (used to train the model) can be found in [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset).
+* Download [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit)
+* The lab environment can be created with CarND Term1 Starter Kit. Click [here](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) for the details.
+* the main program can be run by doing the following from the project top directory.
 ```sh
-git clone https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project
-cd CarND-Traffic-Sign-Classifier-Project
-jupyter notebook Traffic_Sign_Classifier.ipynb
-```
+    git clone https://github.com/AElkenawy/SDCars-Traffic-Sign-Classifier
+    cd CarND-Traffic-Sign-Classifier-Project
+    jupyter notebook main.ipynb 
+``` 
 
-### Requirements for Submission
-Follow the instructions in the `Traffic_Sign_Classifier.ipynb` notebook and write the project report using the writeup template as a guide, `writeup_template.md`. Submit the project code and writeup document.
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
+The jupyter notebook _main.ipynb_ is containing necessary routines for signs classification. The Traffic signs to be tested is located in  _./test_images and the classified labels are included inside the notebook (a _main.html_ file of the notebook is included inside project top directory)
